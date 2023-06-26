@@ -33,10 +33,11 @@ tc-grps     = Protein Water_and_Ions ; two coupling groups - more accurate
 tau_t       = 0.1   0.1                     ; time constant, in ps
 ref_t       = 340   340                     ; reference temperature, one for each group, in K
 ; Pressure coupling
- pcoupl      = Parrinello-Rahman             ; pressure coupling is on for NPT
- pcoupltype  = isotropic                     ; uniform scaling of box vectors
- tau_p       = 1.0                           ; time constant, in ps
- ref_p       = 1.0                           ; reference pressure, in bar
+; pcoupl      = Parrinello-Rahman             ; pressure coupling is on for NPT
+ pcoupl      = no                            ; NVT
+; pcoupltype  = isotropic                     ; uniform scaling of box vectors
+; tau_p       = 1.0                           ; time constant, in ps
+; ref_p       = 1.0                           ; reference pressure, in bar
 compressibility = 4.5e-5                    ; isothermal compressibility of water, bar^-1
 refcoord_scaling    = no
 ; Periodic boundary conditions

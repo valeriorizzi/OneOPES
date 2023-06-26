@@ -1,0 +1,32 @@
+# vim:ft=plumed
+#RESTART
+
+MOLINFO STRUCTURE=input.ala2.pdb
+phi: TORSION ATOMS=@phi-2
+psi: TORSION ATOMS=@psi-2
+omega: TORSION ATOMS=@omega-2
+ene: ENERGY
+
+d1: DISTANCE ATOMS=2,19
+d2: DISTANCE ATOMS=6,17
+d3: DISTANCE ATOMS=7,16
+
+OPES_METAD_EXPLORE ...
+  LABEL=opes
+  ARG=psi
+  SIGMA=0.2
+  FILE=Kernels.data
+  #STATE_RFILE=compressed.Kernels
+  STATE_WFILE=compressed.Kernels
+  PACE=5000
+  BARRIER=50
+  CALC_WORK
+... OPES_METAD_EXPLORE
+
+ecv: ECV_MULTITHERMAL ARG=ene TEMP_MAX=600 
+opesX: OPES_EXPANDED ARG=ecv.* FILE=DeltaFs.data PACE=50 CALC_WORK
+
+PRINT STRIDE=100 FILE=COLVAR ARG=opes.bias,phi,psi,ene,omega,d1,d2,d3,opesX.bias,opes.work,opesX.work FMT=%7.4f
+
+ENDPLUMED
+

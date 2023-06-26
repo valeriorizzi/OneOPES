@@ -1,0 +1,44 @@
+# vim:ft=plumed
+#RESTART
+
+MOLINFO STRUCTURE=input.ala2.pdb
+phi: TORSION ATOMS=@phi-2
+psi: TORSION ATOMS=@psi-2
+omega: TORSION ATOMS=@omega-2
+ene: ENERGY
+
+d1: DISTANCE ATOMS=2,19
+d2: DISTANCE ATOMS=7,17
+d3: DISTANCE ATOMS=6,16
+
+METAD ...
+  LABEL=metad
+  ARG=psi
+  SIGMA=0.2
+  PACE=500
+  TEMP=600
+  HEIGHT=1.5
+  BIASFACTOR=20
+  FILE=HILLS_PSI
+  GRID_MIN=-pi
+  GRID_MAX=pi
+  GRID_BIN=50
+  CALC_RCT
+... METAD
+
+METAD ...
+  LABEL=metadwte
+  ARG=ene
+  SIGMA=10
+  PACE=500000
+  TEMP=600
+  HEIGHT=0.2
+  BIASFACTOR=10
+  FILE=HILLS
+  RESTART=YES
+... METAD
+
+PRINT STRIDE=100 FILE=COLVAR ARG=metad.rbias,phi,psi,ene,omega,d1,d2,d3,metadwte.bias FMT=%7.4f
+
+ENDPLUMED
+

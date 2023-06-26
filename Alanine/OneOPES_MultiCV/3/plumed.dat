@@ -1,0 +1,61 @@
+# vim:ft=plumed
+#RESTART
+
+MOLINFO STRUCTURE=input.ala2.pdb
+phi: TORSION ATOMS=@phi-2
+psi: TORSION ATOMS=@psi-2
+omega: TORSION ATOMS=@omega-2
+ene: ENERGY
+
+d1: DISTANCE ATOMS=2,19
+d2: DISTANCE ATOMS=6,17
+d3: DISTANCE ATOMS=7,16
+
+OPES_METAD_EXPLORE ...
+  LABEL=opes
+  ARG=psi
+  SIGMA=0.2
+  FILE=Kernels.data
+  STATE_RFILE=compressed.Kernels
+  STATE_WFILE=compressed.Kernels
+  PACE=5000
+  BARRIER=50
+... OPES_METAD_EXPLORE
+
+OPES_METAD_EXPLORE ...
+  LABEL=opes1
+  ARG=d1
+  SIGMA=0.02
+  FILE=Kernels1.data
+  STATE_RFILE=compressed1.Kernels
+  STATE_WFILE=compressed1.Kernels
+  PACE=10000
+  BARRIER=3
+... OPES_METAD_EXPLORE
+
+OPES_METAD_EXPLORE ...
+  LABEL=opes2
+  ARG=d2
+  SIGMA=0.015
+  FILE=Kernels2.data
+  STATE_RFILE=compressed2.Kernels
+  STATE_WFILE=compressed2.Kernels
+  PACE=10000
+  BARRIER=3
+... OPES_METAD_EXPLORE
+
+OPES_METAD_EXPLORE ...
+  LABEL=opes3
+  ARG=d3
+  SIGMA=0.01
+  FILE=Kernels3.data
+  STATE_RFILE=compressed3.Kernels
+  STATE_WFILE=compressed3.Kernels
+  PACE=10000
+  BARRIER=3
+... OPES_METAD_EXPLORE
+
+PRINT STRIDE=100 FILE=COLVAR ARG=opes.bias,phi,psi,ene,omega,d1,d2,d3,opes1.bias,opes2.bias,opes3.bias FMT=%7.4f
+
+ENDPLUMED
+
